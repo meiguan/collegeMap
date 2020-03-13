@@ -54,7 +54,7 @@ var pulsingDot = {
       0,
       Math.PI * 2
     );
-    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+    context.fillStyle = 'rgba(63, 127, 191,' + (1 - t) + ')';
     context.fill();
 
     // draw inner circle
@@ -66,7 +66,7 @@ var pulsingDot = {
       0,
       Math.PI * 2
     );
-    context.fillStyle = 'rgba(255, 100, 100, 1)';
+    context.fillStyle = 'rgba(63, 127, 191, 1)';
     context.strokeStyle = 'white';
     context.lineWidth = 2 + 4 * (1 - t);
     context.fill();

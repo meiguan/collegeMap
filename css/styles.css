@@ -14,8 +14,7 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 0;
-  left: 500px;
+  width: 100%;
 }
 
 h3 {
@@ -47,34 +46,6 @@ button:hover {
 
 #feature-info {
   background: #41779c;
-  padding: 15px;
-  min-height: 150px;
-}
-
-/* sidebar is fixed with and positioned to the left */
-#sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 500px;
-  background-color: #0a99c3;
-  color: #FFF;
-  padding: 25px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-#legend {
-  width: 300px;
-}
-
-.legend label, .legend span {
-  display: block;
-  float: left;
-  height: 15px;
-  width: 14%;
-  text-align: center;
-  font-size: 9px;
-  color: #000000;
+  padding: 0;
+  min-height: 0;
 }
