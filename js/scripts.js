@@ -19,19 +19,88 @@ var initOptions = {
 // create the new map
 var map = new mapboxgl.Map(initOptions);
 
+// add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+
 map.on('load', function () {
 
-  map.addSource('colleges', {
+  map.addSource('college-locations', {
     type: 'geojson',
     data: './data/nyColleges.geojson'
   });
 
   map.addLayer({
-    'id': 'colleges',
+    'id': 'college-locations',
     'type': 'symbol',
-    'source': 'colleges',
+    'source': 'college-locations',
     'layout': {
-      'icon-image': 'college-15' //https://github.com/mapbox/mapbox-gl-styles change the icon to a different 
+      'icon-image': 'college-15', //https://github.com/mapbox/mapbox-gl-styles change the icon to a different
+      'icon-size': 1.5
     }
   });
+
+  // add an empty data source, which we will use to highlight the lot the user is hovering over
+  map.addSource('highlight-feature', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: []
+    }
+  })
+
+  // add a layer for the highlighted college
+  map.addLayer({
+    id: 'highlight-symbol',
+    type: 'circle',
+    source: 'highlight-college',
+    paint: {
+      'circle-radius': 5,
+      'circle-opacity': 1,
+      'circle-color': '#66b3ff',
+    }
+  });
+
+  // listen for the mouse moving over the map and react when the cursor is over our data
+  map.on('mousemove', function (e) {
+    // query for the features under the mouse, but only in the lots layer
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['college-locations'],
+    });
+
+    // if the mouse pointer is over a feature on our layer of interest
+    // take the data for that feature and display it in the sidebar
+    if (features.length > 0) {
+      map.getCanvas().style.cursor = 'pointer';  // make the cursor a pointer
+
+      var hoveredFeature = features[0]
+      var featureInfo = `
+        <h4>${hoveredFeature.properties.inst_name}</h4>
+        <p><strong>HBCU:</strong> ${hoveredFeature.properties.hbcu}</p>
+        <p><strong>Total Admitted:</strong> ${hoveredFeature.properties.total_admitted}</p>
+      `
+      $('#feature-info').html(featureInfo)
+
+      // set this lot's polygon feature as the data for the highlight source
+      map.getSource('highlight-college').setData(hoveredFeature.geometry);
+    } else {
+      // if there is no feature under the mouse, reset things:
+      map.getCanvas().style.cursor = 'default'; // make the cursor default
+
+      // reset the highlight source to an empty featurecollection
+      map.getSource('highlight-feature').setData({
+        type: 'FeatureCollection',
+        features: []
+      });
+
+      // reset the default message
+      $('#feature-info').html(defaultText)
+    }
+  })
 });
+
+$(function() {
+    var data = './data/nyColleges.geojson'
+    $.each(data, function(i, option) {
+        $('#sel').append($('<option/>').attr("value", option.features.unitid).text(option.features.inst_name));
+    });
+})
