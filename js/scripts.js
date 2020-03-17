@@ -1,3 +1,28 @@
+let dropdown = $('#college-dropdown');
+dropdown.empty();
+dropdown.append('<option selected="true" disabled>Choose A University</option>');
+dropdown.prop('selectedIndex', 0);
+
+$(function() {
+  // use jQuery's getJSON() to load the data from the file
+  $.getJSON('./data/nyColleges.geojson', function(data) {
+    // iterate over the features in the geojson FeatureCollection
+    data.features.forEach(function (feature) {
+      // for each feature, create an option in the dropdown
+      $('#college-dropdown').append($('<option/>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
+    })
+  })
+})
+
+// event listeners for the fly via dropdown
+$('#select-college').on('change', function() {
+  var selectedCoords = eval($.select(this).property('value'));
+
+  map.flyTo({
+    center: selectedCoords,
+    zoom: initialZoom
+  })
+})
 
 // this is my mapboxGL token
 // the base style includes data provided by mapbox, this links the requests to my account
@@ -5,13 +30,13 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWVpZ3VhbiIsImEiOiJjazZ1NmFtYmUwNmxpM21xczgza
 
 // we want to return to this point and zoom level after the user interacts
 // with the map, so store them in variables
-var initialCenterPoint = [-73.991780, 40.676]
-var initialZoom = 6
+var initialCenterPoint = [-73.9647614, 40.8075395]
+var initialZoom = 10
 
 // create an object to hold the initialization options for a mapboxGL map
 var initOptions = {
   container: 'map-container', // put the map in this container
-  style: 'mapbox://styles/mapbox/dark-v10', // use this basemap
+  style: 'mapbox://styles/meiguan/ck6uyoshh02ma1iqk7x60lf1f', // use this basemap
   center: initialCenterPoint, // initial view center
   zoom: initialZoom, // initial view zoom level (0-18)
 }
@@ -31,16 +56,17 @@ map.on('load', function () {
 
   map.addLayer({
     'id': 'college-locations',
-    'type': 'symbol',
+    'type': 'circle',
     'source': 'college-locations',
-    'layout': {
-      'icon-image': 'college-15', //https://github.com/mapbox/mapbox-gl-styles change the icon to a different
-      'icon-size': 1.5
+    paint: {
+      'circle-radius': 8,
+      'circle-opacity': .7,
+      'circle-color': '#66b3ff',
     }
   });
 
   // add an empty data source, which we will use to highlight the lot the user is hovering over
-  map.addSource('highlight-feature', {
+  map.addSource('highlight-college', {
     type: 'geojson',
     data: {
       type: 'FeatureCollection',
@@ -51,13 +77,13 @@ map.on('load', function () {
   // add a layer for the highlighted college
   map.addLayer({
     id: 'highlight-symbol',
-    type: 'circle',
+    type: 'symbol',
     source: 'highlight-college',
-    paint: {
-      'circle-radius': 5,
-      'circle-opacity': 1,
-      'circle-color': '#66b3ff',
+    'layout': {
+      'icon-image': 'college-15', //https://github.com/mapbox/mapbox-gl-styles change the icon to a different
+      'icon-size': 0.8
     }
+
   });
 
   // listen for the mouse moving over the map and react when the cursor is over our data
@@ -97,10 +123,3 @@ map.on('load', function () {
     }
   })
 });
-
-$(function() {
-    var data = './data/nyColleges.geojson'
-    $.each(data, function(i, option) {
-        $('#sel').append($('<option/>').attr("value", option.features.unitid).text(option.features.inst_name));
-    });
-})
