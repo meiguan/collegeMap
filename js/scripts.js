@@ -15,14 +15,19 @@ $(function() {
 })
 
 // event listeners for the fly via dropdown
-$('#select-college').on('change', function() {
-  var selectedCoords = eval($.select(this).property('value'));
-
+$('#college-dropdown').change(function() {
+  var collegeid = $( "#colleg-dropdown" ).val();
+  console.log('hello')
+  $.getJSON('./data/nyColleges.geojson', function(data) {
+        $("option[value='" + collegeid + "']", $(this)).attr("selected", feature.properties.geometry.coordinates); // Assuming that "this" is a reference to your picklist.
+    });
   map.flyTo({
-    center: selectedCoords,
+    center: this(),
     zoom: initialZoom
   })
-})
+});
+
+
 
 // this is my mapboxGL token
 // the base style includes data provided by mapbox, this links the requests to my account
