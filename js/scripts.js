@@ -1,34 +1,3 @@
-let dropdown = $('#college-dropdown');
-dropdown.empty();
-dropdown.append('<option selected="true" disabled>Choose A University</option>');
-dropdown.prop('selectedIndex', 0);
-
-$(function() {
-  // use jQuery's getJSON() to load the data from the file
-  $.getJSON('./data/nyColleges.geojson', function(data) {
-    // iterate over the features in the geojson FeatureCollection
-    data.features.forEach(function (feature) {
-      // for each feature, create an option in the dropdown
-      $('#college-dropdown').append($('<option/>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
-    })
-  })
-})
-
-// event listeners for the fly via dropdown
-$('#college-dropdown').change(function() {
-  var collegeid = $( "#colleg-dropdown" ).val();
-  console.log('hello')
-  $.getJSON('./data/nyColleges.geojson', function(data) {
-        $("option[value='" + collegeid + "']", $(this)).attr("selected", feature.properties.geometry.coordinates); // Assuming that "this" is a reference to your picklist.
-    });
-  map.flyTo({
-    center: this(),
-    zoom: initialZoom
-  })
-});
-
-
-
 // this is my mapboxGL token
 // the base style includes data provided by mapbox, this links the requests to my account
 mapboxgl.accessToken = 'pk.eyJ1IjoibWVpZ3VhbiIsImEiOiJjazZ1NmFtYmUwNmxpM21xczgzajNmOG5nIn0.OcXexId1dlHq5jAVkL6d2Q';
@@ -126,5 +95,43 @@ map.on('load', function () {
       // reset the default message
       $('#feature-info').html(defaultText)
     }
+  })
+});
+
+let dropdown = $('#college-dropdown');
+dropdown.empty();
+dropdown.append('<option selected="true" disabled>Choose A University</option>');
+dropdown.prop('selectedIndex', 0);
+
+$(function() {
+  // use jQuery's getJSON() to load the data from the file
+  $.getJSON('./data/nyColleges.geojson', function(data) {
+    // iterate over the features in the geojson FeatureCollection
+    data.features.forEach(function (feature) {
+      // for each feature, create an option in the dropdown
+      $('#college-dropdown').append($('<option/>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
+    })
+    // event listeners for the fly via dropdown
+    $('#college-dropdown').change(function() {
+      var collegeid = $('#college-dropdown').val();
+      // lookup the matching feature using Array.find()
+      var matchingFeature = data.features.find(function(feature) {
+        return feature.properties.unitid.toString() === collegeid
+      })
+      // use the matching feature's geometry to center the map
+      map.flyTo({
+        center: matchingFeature.geometry.coordinates,
+        zoom: 15,
+      })
+
+      var matchingFeatureInfo = `
+        <h4>${matchingFeature.properties.inst_name}</h4>
+        <p><strong>HBCU:</strong> ${matchingFeature.properties.hbcu}</p>
+        <p><strong>Total Admitted:</strong> ${matchingFeature.properties.total_admitted}</p>
+      `
+      $('#feature-info').html(matchingFeatureInfo)
+
+
+    })
   })
 });
