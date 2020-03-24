@@ -21,7 +21,7 @@ var map = new mapboxgl.Map(initOptions);
 // add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl());
 
-map.on('load', function () {
+map.on('load', function() {
 
   map.addSource('college-locations', {
     type: 'geojson',
@@ -61,16 +61,16 @@ map.on('load', function () {
   });
 
   // listen for the mouse moving over the map and react when the cursor is over our data
-  map.on('mousemove', function (e) {
+  map.on('mousemove', function(e) {
     // query for the features under the mouse, but only in the lots layer
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['college-locations'],
+      layers: ['college-locations'],
     });
 
     // if the mouse pointer is over a feature on our layer of interest
     // take the data for that feature and display it in the sidebar
     if (features.length > 0) {
-      map.getCanvas().style.cursor = 'pointer';  // make the cursor a pointer
+      map.getCanvas().style.cursor = 'pointer'; // make the cursor a pointer
 
       var hoveredFeature = features[0]
       var featureInfo = `
@@ -79,38 +79,6 @@ map.on('load', function () {
         <p><strong>Total Admitted:</strong> ${hoveredFeature.properties.total_admitted}</p>
       `
       $('#feature-info').html(featureInfo)
-
-      // Pie Chart Example
-      var ctx = document.getElementById("myPieChart");
-      var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ["Direct", "Referral", "Social"],
-          datasets: [{
-            data: [55, 30, 15],
-            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-            hoverBorderColor: "rgba(234, 236, 244, 1)",
-          }],
-        },
-        options: {
-          maintainAspectRatio: false,
-          tooltips: {
-            backgroundColor: "rgb(255,255,255)",
-            bodyFontColor: "#858796",
-            borderColor: '#dddfeb',
-            borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
-            displayColors: false,
-            caretPadding: 10,
-          },
-          legend: {
-            display: false
-          },
-          cutoutPercentage: 80,
-        },
-      });
 
       // set this lot's polygon feature as the data for the highlight source
       map.getSource('highlight-college').setData(hoveredFeature.geometry);
@@ -139,17 +107,20 @@ $(function() {
   // use jQuery's getJSON() to load the data from the file
   $.getJSON('./data/nyColleges.geojson', function(data) {
     // iterate over the features in the geojson FeatureCollection
-    data.features.forEach(function (feature) {
+    data.features.forEach(function(feature) {
       // for each feature, create an option in the dropdown
       dropdown.append($('<a class="dropdown-item"></a>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
     })
-    // event listeners for the fly via dropdown
-    $('#college-button').change(function() {
-      var collegeid = $('#college-button').val();
-      // lookup the matching feature using Array.find()
+
+    $('.dropdown-item').click(function() {
+      console.log($(this).text());
+      var collegeName = $(this).text(); //get the selected the college name
+      $("#collegeNameText").val(collegeName) //display selected college name
+
       var matchingFeature = data.features.find(function(feature) {
-        return feature.properties.unitid.toString() === collegeid
+        return feature.properties.inst_name.toString() === collegeName
       })
+
       // use the matching feature's geometry to center the map
       map.flyTo({
         center: matchingFeature.geometry.coordinates,
@@ -162,8 +133,41 @@ $(function() {
         <p><strong>Total Admitted:</strong> ${matchingFeature.properties.total_admitted}</p>
       `
       $('#feature-info').html(matchingFeatureInfo)
-
-
     })
   })
+});
+
+var ctx = document.getElementById('myBarChart').getContext('2d');
+var chart = new Chart(ctx, {
+  // The type of chart we want to create
+  type: 'bar',
+
+  // The data for our dataset
+  data: {
+    labels: ['All institutions', 'Public', 'Private Non-Profit', 'Private For-Profit'],
+    datasets: [{
+      label: 'Percent Complete within 6-Years By Type of 4-Year College in U.S.',
+      backgroundColor: '#1089ff',
+      borderColor: '#1089ff',
+      data: [60, 60, 66, 21]
+    }]
+  },
+
+  // Configuration options go here
+  options: {
+    scales: {
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Percent'
+        }
+      }],
+      xAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Type of Institution'
+        }
+      }]
+    }
+  }
 });

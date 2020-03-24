@@ -1,3 +1,4 @@
+
 /* use a non-serif font */
 html {
   font-family: 'verdana', sans-serif;
@@ -44,6 +45,7 @@ button:hover {
   background: #41779c;
   padding: 15px;
   min-height: 150px;
+  margin-bottom: 10px;
 }
 
 /* sidebar is fixed with and positioned to the left */
@@ -57,6 +59,15 @@ button:hover {
   color: #FFF;
   padding: 25px;
   box-sizing: border-box;
+  overflow-y: auto;
+}
+
+p {
+  font-size: small;
+}
+
+ul {
+  font-size: small;
 }
 
 /* Dropdown Button */
@@ -79,5 +90,8 @@ button:hover {
   position: relative;
   display: inline-block;
   margin: 10px;
-  width: 400px;
+}
+
+#myBarChart {
+  background-color: #FFFFFF;
 }

@@ -1,58 +1,96 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href='css/styles.css' rel='stylesheet' />
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>New York College Map</title>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href='css/styles.css' rel='stylesheet' />
 
-  <body>
-    <!-- the sidebar is fixed width and will contain a title, some text, and buttons -->
-    <div id='sidebar'>
-      <h3>New York College Map</h3>
-      <p>ABOUT THIS MAP</p>
-      <div class="input-group">
-          <input type="text" class="form-control" aria-label="Text input with dropdown button">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu" id="unitId">
-            </div>
-          </div>
+  <title>New York College Map</title>
+</head>
+
+<body>
+  <!-- the sidebar is fixed width and will contain a title, some text, and buttons -->
+
+  <div id='sidebar'>
+    <h2>Colleges in New York State</h2>
+      <h4>Why This Map?</h4>
+      <p>Over the past 10 years, on average 52k students graduate from New York City Public
+        Schools annually. The school system also reports consistent gains in 4-yr high school
+        graduation rates from <strong>60.7% for the class of 2009 to 77.3% for the class of 2019</strong>.
+        While gains in 4-yr high school graduation rates have been notable, school
+        leaders now are making moves to improve their rate of postsecondary enrollment
+        and persistence &mdash; getting their high school graduates to and through college. </p>
+      <p>While the benefits of a 4-year college degree are more/less universally acknowledged,
+        it is important to recognize that those benefits can only be realized if a student
+        persists and earns a degree. Otherwise, postsecondary enrollment alone generates an
+        enormous amount of financial burden. </p>
+      <p>This map aims to highlight a key metric that is often left out when discussing
+        college choice &mdash; <em>150% completion rate</em>. This measure reflects
+        the "6 year graduation rate for first-time, full-time undergraduate students
+        who began seeking a bachelor’s degree at 4-year degree-granting institutions".
+        (NCES, 2019) For college students who entered in the fall of 2011, their
+        150% completion rate was 60% overall. This means by 2017, 60% of the students
+        who entered in 2011 completed their degree. </p>
+
+        <canvas id="myBarChart"></canvas>
+
+        <br>
+        <p style="font-size:medium;"><strong>🎒Select A College to Explore</strong></p>
+        <p>(Use Dropdown or Hover over map)</p>
+    <div class="input-group">
+      <input type="text" class="form-control" aria-label="Text input with dropdown button" id="collegeNameText">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        <div class="dropdown-menu" id="unitId">
         </div>
-
-      <div id='feature-info'>
-
-        <div class="card-body">
-          <div class="chart-pie pt-4">
-            <canvas id="myPieChart"></canvas>
-          </div>
-          <hr>
-        </div>
-
       </div>
     </div>
-    <!-- close sidebar -->
 
-    <!-- this is the map container, which will hold the mapboxGL map -->
-    <div id='map-container'>
+    <div id='feature-info'>
+
+      <div class="card-body">
+        <div class="chart-pie pt-4">
+          <canvas id="myPieChart"></canvas>
+        </div>
+        <hr>
+      </div>
 
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- Load mapboxGL, jQuery, then our local javascript files -->
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src='js/scripts.js'></script>
+    <div class="details">
+      <h4>Data Sources</h4>
+      <ul>
+        <li>U.S. Department of Education, National Center for Education Statistics. (2019).
+          The Condition of Education 2019 (NCES 2019-144),
+          <a href="https://nces.ed.gov/programs/coe/indicator_ctr.asp">Undergraduate Retention
+            and Graduation Rates.</a></li>
+        <li>Urban Institute. Education Data Portal. <a href = "https://educationdata.urban.org/documentation/colleges.html#overview">Full Api</a>.</li>
+      </ul>
+    </div>
 
-  </body>
+  </div>
+  <!-- close sidebar -->
+
+  <!-- this is the map container, which will hold the mapboxGL map -->
+  <div id='map-container'>
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- Load mapboxGL, jQuery, then our local javascript files -->
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src='js/scripts.js'></script>
+
+</body>
+
 </html>
