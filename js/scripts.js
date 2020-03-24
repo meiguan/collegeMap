@@ -135,18 +135,17 @@ dropdown.empty();
 dropdown.append('<option selected="true" disabled>Choose A University</option>');
 dropdown.prop('selectedIndex', 0);
 
-
 $(function() {
   // use jQuery's getJSON() to load the data from the file
   $.getJSON('./data/nyColleges.geojson', function(data) {
     // iterate over the features in the geojson FeatureCollection
     data.features.forEach(function (feature) {
       // for each feature, create an option in the dropdown
-      $('#college-dropdown').append($('<option/>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
+      $('#college-button ul').append($('<button/>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
     })
     // event listeners for the fly via dropdown
-    $('#college-dropdown').change(function() {
-      var collegeid = $('#college-dropdown').val();
+    $('#college-button').change(function() {
+      var collegeid = $('#college-button').val();
       // lookup the matching feature using Array.find()
       var matchingFeature = data.features.find(function(feature) {
         return feature.properties.unitid.toString() === collegeid

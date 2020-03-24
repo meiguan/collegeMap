@@ -60,17 +60,17 @@ button:hover {
 }
 
 /* Dropdown Button */
-.dropbtn {
+.dropdown-toggle {
   background-color: #1089ff;
   color: #FFF;
-  padding: 16px;
+  padding: 10px;
   font-size: 16px;
   border: none;
   cursor: pointer;
 }
 
 /* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
+.dropdown-toggle:hover, .dropbtn:focus {
   background-color: #1089ff;
 }
 
@@ -79,4 +79,5 @@ button:hover {
   position: relative;
   display: inline-block;
   margin: 10px;
+  width: 400px;
 }
