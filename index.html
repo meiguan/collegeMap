@@ -18,13 +18,14 @@
     <div id='sidebar'>
       <h3>New York College Map</h3>
       <p>ABOUT THIS MAP</p>
-      <div class="dropdown" id="college-button">
-        <button type="button"  class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Select A College <span class="caret"></span>
-        </button>
-        <ul class="but-dropdown dropdown-menu">
-        </ul>
-      </div>
+      <div class="input-group">
+          <input type="text" class="form-control" aria-label="Text input with dropdown button">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <div class="dropdown-menu" id="unitId">
+            </div>
+          </div>
+        </div>
 
       <div id='feature-info'>
 

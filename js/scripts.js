@@ -130,7 +130,7 @@ map.on('load', function () {
   })
 });
 
-let dropdown = $('#dropdown-menu');
+let dropdown = $('#unitId');
 dropdown.empty();
 dropdown.append('<option selected="true" disabled>Choose A University</option>');
 dropdown.prop('selectedIndex', 0);
@@ -141,7 +141,7 @@ $(function() {
     // iterate over the features in the geojson FeatureCollection
     data.features.forEach(function (feature) {
       // for each feature, create an option in the dropdown
-      $('#college-button ul').append($('<button/>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
+      dropdown.append($('<a class="dropdown-item"></a>').attr("value", feature.properties.unitid).text(feature.properties.inst_name));
     })
     // event listeners for the fly via dropdown
     $('#college-button').change(function() {
