@@ -10,7 +10,7 @@ var initialZoom = 10
 // create an object to hold the initialization options for a mapboxGL map
 var initOptions = {
   container: 'map-container', // put the map in this container
-  style: 'mapbox://styles/meiguan/ck6uyoshh02ma1iqk7x60lf1f', // use this basemap
+  style: 'mapbox://styles/mapbox/light-v10', // use this basemap
   center: initialCenterPoint, // initial view center
   zoom: initialZoom, // initial view zoom level (0-18)
 }
@@ -79,6 +79,38 @@ map.on('load', function () {
         <p><strong>Total Admitted:</strong> ${hoveredFeature.properties.total_admitted}</p>
       `
       $('#feature-info').html(featureInfo)
+
+      // Pie Chart Example
+      var ctx = document.getElementById("myPieChart");
+      var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ["Direct", "Referral", "Social"],
+          datasets: [{
+            data: [55, 30, 15],
+            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+          }],
+        },
+        options: {
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+          },
+          legend: {
+            display: false
+          },
+          cutoutPercentage: 80,
+        },
+      });
 
       // set this lot's polygon feature as the data for the highlight source
       map.getSource('highlight-college').setData(hoveredFeature.geometry);
