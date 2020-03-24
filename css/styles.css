@@ -78,4 +78,5 @@ button:hover {
 .dropdown {
   position: relative;
   display: inline-block;
+  margin: 10px;
 }

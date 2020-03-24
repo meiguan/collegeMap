@@ -130,10 +130,11 @@ map.on('load', function () {
   })
 });
 
-let dropdown = $('#college-dropdown');
+let dropdown = $('#dropdown-menu');
 dropdown.empty();
 dropdown.append('<option selected="true" disabled>Choose A University</option>');
 dropdown.prop('selectedIndex', 0);
+
 
 $(function() {
   // use jQuery's getJSON() to load the data from the file
