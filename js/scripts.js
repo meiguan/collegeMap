@@ -137,8 +137,8 @@ $(function() {
   })
 });
 
-var ctx = document.getElementById('myBarChart').getContext('2d');
-var chart = new Chart(ctx, {
+var ctx1 = document.getElementById('myBarChart').getContext('2d');
+var chart1 = new Chart(ctx1, {
   // The type of chart we want to create
   type: 'bar',
 
@@ -146,7 +146,7 @@ var chart = new Chart(ctx, {
   data: {
     labels: ['All institutions', 'Public', 'Private Non-Profit', 'Private For-Profit'],
     datasets: [{
-      label: 'Percent Complete within 6-Years By Type of 4-Year College in U.S.',
+      label: '% Completed',
       backgroundColor: '#1089ff',
       borderColor: '#1089ff',
       data: [60, 60, 66, 21]
@@ -155,12 +155,19 @@ var chart = new Chart(ctx, {
 
   // Configuration options go here
   options: {
+    title: {
+            display: true,
+            text: 'Percent of Students Complete in 6-Years Time'
+        },
     scales: {
       yAxes: [{
         scaleLabel: {
           display: true,
           labelString: 'Percent'
-        }
+        },
+        ticks: {
+                beginAtZero: true
+            }
       }],
       xAxes: [{
         scaleLabel: {
