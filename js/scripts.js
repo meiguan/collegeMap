@@ -127,6 +127,48 @@ $(function() {
         zoom: 15,
       })
 
+      var ctx2 = document.getElementById('collegeBarCharts').getContext('2d');
+      var chart2 = new Chart(ctx2, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+          labels: ['Overall Completion Rate', 'Female Completion Rate', 'Male Completion Rate'],
+          datasets: [{
+            label: '% Completed',
+            backgroundColor: '#1089ff',
+            borderColor: '#1089ff',
+            data: [matchingFeature.properties.completion_rate_150pct, matchingFeature.properties.female_completion_rate_150pct, matchingFeature.properties.male_completion_rate_150pct]
+          }]
+        },
+
+        // Configuration options go here
+        options: {
+          title: {
+                  display: true,
+                  text: 'Percent of Students Complete in 6-Years Time'
+              },
+          scales: {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Percent'
+              },
+              ticks: {
+                      beginAtZero: true
+                  }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Type of Institution'
+              }
+            }]
+          }
+        }
+      });
+
       var matchingFeatureInfo = `
         <h4>${matchingFeature.properties.inst_name}</h4>
         <p><strong>HBCU:</strong> ${matchingFeature.properties.hbcu}</p>
@@ -137,7 +179,7 @@ $(function() {
   })
 });
 
-var ctx1 = document.getElementById('myBarChart').getContext('2d');
+var ctx1 = document.getElementById('completersBarChart').getContext('2d');
 var chart1 = new Chart(ctx1, {
   // The type of chart we want to create
   type: 'bar',
