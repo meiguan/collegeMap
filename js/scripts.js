@@ -127,28 +127,35 @@ $(function() {
         zoom: 15,
       })
 
-      var ctx2 = document.getElementById('collegeBarCharts').getContext('2d');
+      var matchingFeatureInfo = `
+        <h4>${matchingFeature.properties.inst_name}</h4>
+        <p><strong>HBCU:</strong> ${matchingFeature.properties.hbcu}</p>
+        <p><strong>Total Admitted:</strong> ${matchingFeature.properties.total_admitted}</p>
+      `
+      $('#feature-info').html(matchingFeatureInfo)
+
+      var ctx2 = document.getElementById('collegeBarChart').getContext('2d');
       var chart2 = new Chart(ctx2, {
         // The type of chart we want to create
         type: 'bar',
 
         // The data for our dataset
         data: {
-          labels: ['Overall Completion Rate', 'Female Completion Rate', 'Male Completion Rate'],
+          labels: ['All institutions', 'Public', 'Private Non-Profit', 'Private For-Profit'],
           datasets: [{
             label: '% Completed',
             backgroundColor: '#1089ff',
             borderColor: '#1089ff',
-            data: [matchingFeature.properties.completion_rate_150pct, matchingFeature.properties.female_completion_rate_150pct, matchingFeature.properties.male_completion_rate_150pct]
+            data: [60, 60, 66, 21]
           }]
         },
 
         // Configuration options go here
         options: {
           title: {
-                  display: true,
-                  text: 'Percent of Students Complete in 6-Years Time'
-              },
+            display: true,
+            text: 'Percent of Students Complete in 6-Years Time'
+          },
           scales: {
             yAxes: [{
               scaleLabel: {
@@ -156,8 +163,8 @@ $(function() {
                 labelString: 'Percent'
               },
               ticks: {
-                      beginAtZero: true
-                  }
+                beginAtZero: true
+              }
             }],
             xAxes: [{
               scaleLabel: {
@@ -169,12 +176,6 @@ $(function() {
         }
       });
 
-      var matchingFeatureInfo = `
-        <h4>${matchingFeature.properties.inst_name}</h4>
-        <p><strong>HBCU:</strong> ${matchingFeature.properties.hbcu}</p>
-        <p><strong>Total Admitted:</strong> ${matchingFeature.properties.total_admitted}</p>
-      `
-      $('#feature-info').html(matchingFeatureInfo)
     })
   })
 });
@@ -198,9 +199,9 @@ var chart1 = new Chart(ctx1, {
   // Configuration options go here
   options: {
     title: {
-            display: true,
-            text: 'Percent of Students Complete in 6-Years Time'
-        },
+      display: true,
+      text: 'Percent of Students Complete in 6-Years Time'
+    },
     scales: {
       yAxes: [{
         scaleLabel: {
@@ -208,8 +209,8 @@ var chart1 = new Chart(ctx1, {
           labelString: 'Percent'
         },
         ticks: {
-                beginAtZero: true
-            }
+          beginAtZero: true
+        }
       }],
       xAxes: [{
         scaleLabel: {
