@@ -19,4 +19,10 @@ Methods
           averaged across the years available on the API from 2015 to 2016. For
           metrics not available/ found via the API, it is noted as NA.
 
+Data Sources
+- U.S. Department of Education, National Center for Education Statistics. (2019).
+    The Condition of Education 2019 (NCES 2019-144), [Undergraduate Retention
+      and Graduation Rates](https://nces.ed.gov/programs/coe/indicator_ctr.asp).
+- Urban Institute. [Education Data Portal.](https://educationdata.urban.org/documentation/colleges.html#overview) Full Api.
+
 [Link to Project](https://meiguan.github.io/collegeMap/)
