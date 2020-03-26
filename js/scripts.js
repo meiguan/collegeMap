@@ -73,12 +73,85 @@ map.on('load', function() {
       map.getCanvas().style.cursor = 'pointer'; // make the cursor a pointer
 
       var hoveredFeature = features[0]
+
+      var completers150 = hoveredFeature.properties.completion_rate_150pct
+      var femaleCompleters = hoveredFeature.properties.female_completion_rate_150pct
+      var maleCompleters = hoveredFeature.properties.male_completion_rate_150pct
+
       var featureInfo = `
         <h4>${hoveredFeature.properties.inst_name}</h4>
+        <p style="font-size:8px;"> Address: ${hoveredFeature.properties.address}, ${hoveredFeature.properties.state_abbr} ${hoveredFeature.properties.zip} </p>
+        <p><strong>Institution Size:</strong> ${hoveredFeature.properties.inst_size}</p>
+        <p><strong>Land Grant Institution:</strong> ${hoveredFeature.properties.land_grant}</p>
         <p><strong>HBCU:</strong> ${hoveredFeature.properties.hbcu}</p>
-        <p><strong>Total Admitted:</strong> ${hoveredFeature.properties.total_admitted}</p>
+        <ul>
+          <li><strong>Admissions</strong>
+            <ul>
+              <li>Total Admitted in 2017: ${hoveredFeature.properties.total_admitted} (${hoveredFeature.properties.pct_admitted_total}%)</li>
+              <li>SAT Reading 25<sup>th</sup> to 75<sup>th</sup> Percentile: ${hoveredFeature.properties.sat_crit_read_25_pctl} &mdash; ${hoveredFeature.properties.sat_crit_read_75_pctl}</li>
+              <li>SAT Math 25<sup>th</sup> to 75<sup>th</sup> Percentile: ${hoveredFeature.properties.sat_math_25_pctl} &mdash; ${hoveredFeature.properties.sat_math_75_pctl}</li>
+              <li>ACT Composite 25<sup>th</sup> to 75<sup>th</sup> Percentile: ${hoveredFeature.properties.act_composite_25_pctl} &mdash; ${hoveredFeature.properties.act_composite_75_pctl}</li>
+            </ul>
+          <li><strong>Student Body</strong>
+            <ul>
+              <li>First Generation Students: ${hoveredFeature.properties.first_gen_student_pct}&percnt;</li>
+              <li>Median Household Income: &dollar;${hoveredFeature.properties.faminc_med}</li>
+              </ul>
+            <li><strong>Completers</strong>
+              <ul>
+                <li>Overall Completion Rate: ${completers150}&percnt;</li>
+                <li>Female Completion Rate: ${femaleCompleters}&percnt;</li>
+                <li>Male Completion Rate: ${maleCompleters}&percnt;</li>
+              </ul>
+            </li>
+          </ul>
       `
       $('#feature-info').html(featureInfo)
+
+      var ctx2 = document.getElementById('collegeBarChart').getContext('2d');
+      var chart2 = new Chart(ctx2, {
+        // The type of chart we want to create
+        type: 'horizontalBar',
+
+        // The data for our dataset
+        data: {
+          labels: ['Overall', 'Female', 'Male'],
+          datasets: [{
+            label: '% Completed',
+            backgroundColor: '#1089ff',
+            borderColor: '#1089ff',
+            data: [completers150, femaleCompleters, maleCompleters]
+          }]
+        },
+
+        // Configuration options go here
+        options: {
+          title: {
+            display: true,
+            text: 'Percent of Students Complete in 6-Years Time'
+          },
+          scales: {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Group'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Percent'
+              },
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
 
       // set this lot's polygon feature as the data for the highlight source
       map.getSource('highlight-college').setData(hoveredFeature.geometry);
@@ -127,26 +200,53 @@ $(function() {
         zoom: 15,
       })
 
+      var completers150 = matchingFeature.properties.completion_rate_150pct
+      var femaleCompleters = matchingFeature.properties.female_completion_rate_150pct
+      var maleCompleters = matchingFeature.properties.male_completion_rate_150pct
+
       var matchingFeatureInfo = `
         <h4>${matchingFeature.properties.inst_name}</h4>
+        <p style="font-size:8px;"> Address: ${matchingFeature.properties.address}, ${matchingFeature.properties.state_abbr} ${matchingFeature.properties.zip} </p>
+        <p><strong>Institution Size:</strong> ${matchingFeature.properties.inst_size}</p>
+        <p><strong>Land Grant Institution:</strong> ${matchingFeature.properties.land_grant}</p>
         <p><strong>HBCU:</strong> ${matchingFeature.properties.hbcu}</p>
-        <p><strong>Total Admitted:</strong> ${matchingFeature.properties.total_admitted}</p>
+        <ul>
+          <li><strong>Admissions</strong>
+            <ul>
+              <li>Total Admitted in 2017: ${matchingFeature.properties.total_admitted} (${matchingFeature.properties.pct_admitted_total}%)</li>
+              <li>SAT Reading 25<sup>th</sup> to 75<sup>th</sup> Percentile: ${matchingFeature.properties.sat_crit_read_25_pctl} &mdash; ${matchingFeature.properties.sat_crit_read_75_pctl}</li>
+              <li>SAT Math 25<sup>th</sup> to 75<sup>th</sup> Percentile: ${matchingFeature.properties.sat_math_25_pctl} &mdash; ${matchingFeature.properties.sat_math_75_pctl}</li>
+              <li>ACT Composite 25<sup>th</sup> to 75<sup>th</sup> Percentile: ${matchingFeature.properties.act_composite_25_pctl} &mdash; ${matchingFeature.properties.act_composite_75_pctl}</li>
+            </ul>
+          <li><strong>Student Body</strong>
+            <ul>
+              <li>First Generation Students: ${matchingFeature.properties.first_gen_student_pct}&percnt;</li>
+              <li>Median Household Income: &dollar;${matchingFeature.properties.faminc_med}</li>
+            </ul>
+          <li><strong>Completers</strong>
+            <ul>
+              <li>Overall Completion Rate: ${completers150}&percnt;</li>
+              <li>Female Completion Rate: ${femaleCompleters}&percnt;</li>
+              <li>Male Completion Rate: ${maleCompleters}&percnt;</li>
+            </ul>
+          </li>
+        </ul>
       `
       $('#feature-info').html(matchingFeatureInfo)
 
-      var ctx2 = document.getElementById('collegeBarChart').getContext('2d');
-      var chart2 = new Chart(ctx2, {
+      var ctx3 = document.getElementById('collegeBarChart').getContext('2d');
+      var chart3 = new Chart(ctx3, {
         // The type of chart we want to create
-        type: 'bar',
+        type: 'horizontalBar',
 
         // The data for our dataset
         data: {
-          labels: ['All institutions', 'Public', 'Private Non-Profit', 'Private For-Profit'],
+          labels: ['Overall', 'Female', 'Male'],
           datasets: [{
             label: '% Completed',
             backgroundColor: '#1089ff',
             borderColor: '#1089ff',
-            data: [60, 60, 66, 21]
+            data: [completers150, femaleCompleters, maleCompleters]
           }]
         },
 
@@ -160,7 +260,7 @@ $(function() {
             yAxes: [{
               scaleLabel: {
                 display: true,
-                labelString: 'Percent'
+                labelString: 'Group'
               },
               ticks: {
                 beginAtZero: true
@@ -169,7 +269,10 @@ $(function() {
             xAxes: [{
               scaleLabel: {
                 display: true,
-                labelString: 'Type of Institution'
+                labelString: 'Percent'
+              },
+              ticks: {
+                beginAtZero: true
               }
             }]
           }

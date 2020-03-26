@@ -41,7 +41,6 @@
 
     <br>
     <p style="font-size:medium;"><strong>🎒Select A College to Explore</strong></p>
-    <p>(Use Dropdown or Hover over map)</p>
     <div class="input-group">
       <input type="text" class="form-control" aria-label="Text input with dropdown button" id="collegeNameText">
       <div class="input-group-append">
@@ -51,13 +50,26 @@
       </div>
     </div>
 
-<div id = 'feature'>
-    <div id='feature-info'>
+    <div id='feature'>
+      <div id='feature-info'>
+        <p>(Use Dropdown or Hover over map)</p>
+      </div>
+      <canvas id="collegeBarChart"></canvas>
     </div>
-    <canvas id="collegeBarChart"></canvas>
-</div>
 
     <div class="details">
+      <h4>Methods</h4>
+      <ul>
+        <li>Through access to the Urban Institute Education Data Portal API, data
+          was downloaded and processed in 2 Jupyter Notebooks--can be located in
+          the <a href="https://github.com/meiguan/collegeMap">Github repo</a>.</li>
+        <li>In general the admissions data only references the latest year
+          available via the API, 2017. And for the data points related to family
+          income, completers, and first generation status, these points were
+          averaged across the years available on the API from 2015 to 2016. For
+          metrics not available/ found via the API, it is noted as <em>`NA`</em>.</li>
+      </ul>
+
       <h4>Data Sources</h4>
       <ul>
         <li>U.S. Department of Education, National Center for Education Statistics. (2019).
