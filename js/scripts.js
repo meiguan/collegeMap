@@ -23,11 +23,13 @@ map.addControl(new mapboxgl.NavigationControl());
 
 map.on('load', function() {
 
+  // add the geojson file
   map.addSource('college-locations', {
     type: 'geojson',
     data: './data/nyColleges.geojson'
   });
 
+  // add a layer to show just dots of the colleges
   map.addLayer({
     'id': 'college-locations',
     'type': 'circle',
